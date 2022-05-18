@@ -1,0 +1,14 @@
+[
+  {
+    "name": "pippo",
+    "surname": "de pippis",
+    "gender": "maschile",
+    "yob": 2000
+  },
+  {
+    "name": "carlo",
+    "surname": "bormetti",
+    "gender": "maschile",
+    "yob": 2002
+  }
+]
