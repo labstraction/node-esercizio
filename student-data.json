@@ -1,14 +1,1 @@
-[
-  {
-    "name": "pippo",
-    "surname": "de pippis",
-    "gender": "maschile",
-    "yob": 2000
-  },
-  {
-    "name": "carlo",
-    "surname": "bormetti",
-    "gender": "maschile",
-    "yob": 2002
-  }
-]
+[{"name":"andrea","surname":"gervaso","gender":"non definito","yob":2009},{"name":"andrea","surname":"morbio","gender":"maschile","yob":1990},{"name":"andrea","surname":"ecco","gender":"femminile","yob":2001}]

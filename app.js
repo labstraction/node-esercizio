@@ -3,13 +3,15 @@ const model = require('./model.js');
 const prompt = require('prompt');
 
 
-
+prompt.start()
 
 const studentArray = tryToLoadData()
 
 console.log('benvenuti nel sito della scuola!')
 
 startMenu();
+
+
 
 function startMenu(){
 
@@ -20,7 +22,7 @@ function startMenu(){
   console.log('4) Elimina studente');
   console.log('5) Esci');
 
-  prompt.start()
+  
 
   const schema = {
     properties:{
@@ -36,7 +38,8 @@ function startMenu(){
 function startMenuDone(err, res){
   switch (res.selection) {
     case '1':
-      visulizeAllStudents()
+      visulizeStudents(studentArray)
+      startMenu();
       break;
     case '2':
       insertStudent()
@@ -99,14 +102,108 @@ function insertStudentDone(err, res){
   startMenu();
 }
 
+function searchStudent() {
+  const schema = {
+    properties: {
+      searchWord: {
+        description: 'inserisci la parola da cercare'
+      }
+    }
+  }
 
-function visulizeAllStudents(){
+  prompt.get(schema, executeSearch);
+}
+
+function executeSearch(err, res){
+
+  const tempArray = [];
+
   for (const student of studentArray) {
-    console.log(student.toString());
+
+    const foundInName = student.name.toLowerCase().includes(res.searchWord.toLowerCase());
+    const foundInSurname = student.surname.toLowerCase().includes(res.searchWord.toLowerCase());
+
+    if ( foundInName || foundInSurname) {
+      tempArray.push(student);
+    }
+  }
+
+  // const tempArray = studentArray.filter(filterFunction)
+  
+
+  visulizeStudents(tempArray);
+  startMenu();
+}
+
+// function filterFunction(student) {
+//   const foundInName = student.name.toLowerCase().includes(res.searchWord.toLowerCase());
+//   const foundInSurname = student.surname.toLowerCase().includes(res.searchWord.toLowerCase());
+
+//   // if (foundInName || foundInSurname) {
+//   //   return true;
+//   // } else {
+//   //   return false;
+//   // }
+
+//   return foundInName || foundInSurname;
+// }
+
+function removeStudent(){
+  console.log("Ecco gli studenti attualmente registrati:")
+  visulizeStudents(studentArray);
+
+  const schema = {
+    properties: {
+      selectedIndex: {
+        description: 'inserisci il numero dello studente da eliminare'
+      }
+    }
+  }
+
+  prompt.get(schema, executeRemoveStudent);
+}
+
+
+function executeRemoveStudent(err, res){
+  const humanIndex = parseInt(res.selectedIndex);
+
+  if (humanIndex === NaN) {
+    startMenu()
+    return;
+  }
+
+  const index = humanIndex - 1;
+
+  const isInArray = index >= 0 && index < studentArray.length;
+
+  if (isInArray) {
+    studentArray.splice(index, 1);
+    tryToSaveData();
+    startMenu();
+  } else {
+    console.log("indice non trovato");
+    startMenu()
+    return;
+  }
+
+}
+
+
+function visulizeStudents(arrayToVisulize){
+
+  for (let i = 0; i < arrayToVisulize.length; i++) {
+    const student = arrayToVisulize[i];
+    const humanIndex = i + 1;
+    console.log(humanIndex + ') ' + student.toString());
     console.log('------------------------')
   }
 
-  startMenu();
+  // for (const student of arrayToVisulize) {
+  //   console.log(student.toString());
+  //   console.log('------------------------')
+  // }
+
+
 }
 
 
